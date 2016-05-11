@@ -12,6 +12,6 @@ tmr.alarm(1, 1000, 1, function()
     else 
         tmr.stop(1)
         print("IP is "..wifi.sta.getip())
-        --dofile("main.lua")
+        dofile("main.lua")
     end 
 end)
