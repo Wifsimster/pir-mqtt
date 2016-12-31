@@ -10,6 +10,3 @@ REFRESH_RATE = 30000 -- ms
 
 -- GPIO
 DATA_PIN = 3 -- GPIO_0
-
--- LOCATION
-LOCATION = "office"
