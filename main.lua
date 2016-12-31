@@ -14,7 +14,7 @@ m:lwt("/offline", '{"message":"'..CLIENT_ID..'", "topic":"'..TOPIC..'", "ip":"'.
 
 function publish()
     DATA = '{"mac":"'..wifi.sta.getmac()..'", "ip":"'..ip..'",'
-    DATA = DATA..'"motion":"'..gpio.read(DATA_PIN)..'"}'
+    DATA = DATA..'"state":"'..gpio.read(DATA_PIN)..'"}'
     m:publish(TOPIC, DATA, 0, 0, function(conn)
         print(CLIENT_ID.." sending data: "..DATA.." to "..TOPIC)
     end)
