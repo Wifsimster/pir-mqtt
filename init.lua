@@ -12,7 +12,8 @@ tmr.create():alarm(1000, tmr.ALARM_AUTO, function(cb_timer)
         print("Waiting for IP address...")
     else
         cb_timer:unregister()
-        print("WiFi connection established, IP address: " .. wifi.sta.getip())
+        print("WiFi connection established")
+        print("IP address: " .. wifi.sta.getip())
         if file.open("main.lua") ~= nil then
             dofile("main.lua")
         else 
