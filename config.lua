@@ -8,4 +8,4 @@ BROKER_PORT = 1883
 CLIENT_ID = "ESP8266-"..node.chipid()
 
 -- GPIO
-DATA_PIN = 3 -- GPIO_0
+DATA_PIN = 4 -- GPIO_2

@@ -1,13 +1,24 @@
 require('config')
 
 TOPIC = "/sensors/pir/data"
+
 gpio.mode(DATA_PIN, gpio.INT)
+
 m = mqtt.Client(CLIENT_ID, 120, "", "")
 ip = wifi.sta.getip()
 val = 1
 
-m:lwt("/offline", '{"message":"'..CLIENT_ID..'", "topic":"'..TOPIC..'", "ip":"'..ip..'"}', 0, 0)
-        
+m:lwt("/lwt", '{"message":"'..CLIENT_ID..'", "topic":"'..TOPIC..'", "ip":"'..ip..'"}', 0, 0)
+
+-- Try to reconnect to broker when communication is down
+m:on("offline", function(con)
+    ip = wifi.sta.getip()
+    print ("MQTT reconnecting to " .. BROKER_IP .. " from " .. ip)
+    tmr.alarm(1, 10000, 0, function()
+        node.restart();
+    end)
+end)
+
 print("Connecting to MQTT: "..BROKER_IP..":"..BROKER_PORT.."...")
 
 m:connect(BROKER_IP, BROKER_PORT, 0, 1, function(conn)
