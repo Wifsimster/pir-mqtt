@@ -1,14 +1,13 @@
 require('config')
-
-TOPIC = "/sensors/pir/data"
+require('functions')
 
 gpio.mode(DATA_PIN, gpio.INT)
 
-m = mqtt.Client(CLIENT_ID, 120, "", "")
+mac = wifi.sta.getmac()
 ip = wifi.sta.getip()
-val = 1
+m = mqtt.Client(CLIENT_ID, 120, "", "")
 
-m:lwt("/lwt", '{"message":"'..CLIENT_ID..'", "topic":"'..TOPIC..'", "ip":"'..ip..'"}', 0, 0)
+m:lwt("/lwt", '{"message":"'..CLIENT_ID..'","topic":"'..DATA_TOPIC..'","ip":"'..ip..'"}', 0, 0)
 
 -- Try to reconnect to broker when communication is down
 m:on("offline", function(con)
@@ -19,29 +18,11 @@ m:on("offline", function(con)
     end)
 end)
 
-print("Connecting to MQTT: "..BROKER_IP..":"..BROKER_PORT.."...")
-
+print("Connecting to "..BROKER_IP..":"..BROKER_PORT.."...")
 m:connect(BROKER_IP, BROKER_PORT, 0, 1, function(conn)
-    print("Connected to MQTT: "..BROKER_IP..":"..BROKER_PORT.." as "..CLIENT_ID)
-
-    DATA = '{"mac":"'..wifi.sta.getmac()..'", "ip":"'..ip..'", "online":"true"}'
-        
-    m:publish(TOPIC, DATA, 0, 0, function(conn)
-        print(CLIENT_ID.." sending online: "..DATA.." to "..TOPIC)
-    end)
-    
-    gpio.trig(DATA_PIN, 'both', publish)
-        
+    print("Connected to "..BROKER_IP..":"..BROKER_PORT.." as "..CLIENT_ID)
+    mqtt_subscribe()
+    mqtt_online()
+    mqtt_ping()
+    gpio.trig(DATA_PIN, 'both', mqtt_publish)
 end)
-
-function publish(timestamp)
-    print(timestamp)
-    if(gpio.read(DATA_PIN) ~= val) then
-        val = gpio.read(DATA_PIN)
-        DATA = '{"mac":"'..wifi.sta.getmac()..'", "ip":"'..ip..'",'
-        DATA = DATA..'"state":"'..gpio.read(DATA_PIN)..'"}'
-        m:publish(TOPIC, DATA, 0, 0, function(conn)
-            print(CLIENT_ID.." sending data: "..DATA.." to "..TOPIC)            
-        end)
-    end
-end
