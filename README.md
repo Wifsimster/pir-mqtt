@@ -10,8 +10,12 @@ Send motion sensor data through an ESP8266 to a MQTT broker
 
 1. Connect to a wifi AP
 2. Start a MQTT client and try to connect to a MQTT broker, restart until it does
-3. Publish data to MQTT broker each time data changes (motion detection)
-4. MQTT broker can manualy : 
+3. Publish data to `/data/` each time data changes (motion detection)
+
+### Manual actions
+
+The device subscribe to `/action/` and wait for those messages :
+
 - Get the current state : `{ mac: #DEVICE_MAC#, action: "STATE"}`
 - Ping the device : `{ mac: #DEVICE_MAC#, action: "PING"}`
 - Force to device to send an online message : `{ mac: #DEVICE_MAC#, action: "ONLINE"}`
