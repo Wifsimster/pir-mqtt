@@ -9,7 +9,6 @@ function mqtt_state()
 end
 
 function mqtt_subscribe()
-    mqtt_activity()
     TOPIC = '/action/'
     m:subscribe(TOPIC, 2, function(m)
         print("Successfully subscribed to the topic: "..TOPIC)
