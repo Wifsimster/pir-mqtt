@@ -5,7 +5,7 @@ gpio.mode(DATA_PIN, gpio.INT)
 
 mac = wifi.sta.getmac()
 ip = wifi.sta.getip()
-m = mqtt.Client(CLIENT_ID, 120, "", "")
+m = mqtt.Client(CLIENT_ID, 120, MQTT_USERNAME, MQTT_PASSWORD)
 
 m:lwt("/lwt", '{"mac":"'..mac..'"}', 0, 0)
 
