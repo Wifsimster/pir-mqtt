@@ -8,6 +8,8 @@ BROKER_PORT = 1883
 
 -- MQTT Settings
 CLIENT_ID = "ESP8266-"..node.chipid()
+MQTT_USERNAME = ""
+MQTT_PASSWORD = ""
 DEVICE_TYPE = "motion"
 
 -- GPIO
